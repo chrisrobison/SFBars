@@ -44,10 +44,10 @@ for ($i=0; $i<count($lines); $i++) {
         if (preg_match("/>(.+?)<\//", $parts[2], $matches)) {
             $bar->price = $matches[1];
         }
-        if (!$bar->price) {
+        if (!property_exists($bar, 'price')) {
             $bar->price = "*";
         }        
-        if ($bar->address) {
+        if (property_exists($bar, 'address')) {
             $bars[] = $bar;
         }
         $i += 2;
