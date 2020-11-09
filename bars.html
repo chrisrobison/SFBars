@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title></title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+    body {
+        margin:0;
+        padding:0;
+        font-size:14px;
+        font-family:'Montserrat', sans-serif;
+    }
+    #bars {
+        margin: 1em auto;
+        border-collapse: collapse;
+        border: 1px solid #bbb;
+    }
+    th {
+        background-color:#333;
+        color:#fff;
+        padding:.5em;
+    }
+    td {
+        border-left: 1px solid #bbb;
+        padding:.25em;
+    }
+    .center {
+        text-align:center;
+    }
+    .sortOrder0::before {
+        content:"▲";
+    }
+    .sortOrder1::before {
+        content:"▼";
+    }
+    tr.selected > td {
+        background-color:#99eeffaa;
+        /* color:#fff !important; */
+
+    }
+</style>
+</head>
+
+<body id="home">
+    <main>
+        <table id='bars'>
+            <thead>
+                <tr>
+                    <th class='sorted sortOrder0'>Name</th>
+                    <th>Address</th>
+                    <th>Type</th>
+                    <th>Price</th>
+                    <th>Rating</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </main>
+<script>
+    (function() {
+        const app = {
+            sortedBy: 'name',
+            sortOrder: 0,
+            lastSortedBy: 'name',
+            sort: function(el) {
+                const who = el.target.innerText.toLowerCase();
+                app.sortedBy = who;
+                
+                if (who === app.lastSortedBy) {
+                    app.sortOrder ^= 1;
+                } else {
+                    app.sortOrder = 0;
+                }
+                el.target.className = 'sorted sortOrder' + app.sortOrder;
+
+                if (app.sortOrder) {
+                    app.bars.bars.sort((b, a) => (a[app.sortedBy] >= b[app.sortedBy]) ? 1 : -1);
+                } else {
+                    app.bars.bars.sort((a, b) => (a[app.sortedBy] >= b[app.sortedBy]) ? 1 : -1);
+                }
+                app.display(app.bars);
+                app.lastSortedBy = who;
+            },
+            init: function() {
+                const thead = document.querySelector("thead");
+                thead.addEventListener("click", function(e) {
+                    document.querySelector('.sorted').className = '';
+                    console.log(`Sorting by ${e.target.innerText}`);
+                    app.sort(e);
+                });
+                
+                const tbody = document.querySelector("tbody");
+                tbody.addEventListener("click", function(e) {
+                    console.log("Clicked on bar");
+                    console.dir(e);
+                    console.log("Clicked on " + e.target.parentNode.id);
+
+                    if (e.target.parentNode && e.target.parentNode.id) {
+                        const sel = document.querySelector('.selected');
+                        if (sel) {
+                            sel.className = '';
+                        }
+                        e.target.parentNode.className = 'selected';
+                        var idx = e.target.parentNode.id.replace(/[^0-9]*/, '');
+                        app.selected = app.bars.bars[idx];
+                        console.dir(app.selected);
+                    }
+                });
+                fetch("bars.json")
+                    .then(response => response.json()) 
+                    .then(data => {
+                        console.dir(data);
+                        data.bars.sort((a,b) => (a.name > b.name) ? 1 : -1);
+                        app.bars = data;
+                        app.display(app.bars);
+                    });
+            },
+            display: function(data) {
+                var out = '';
+                for (var i=0; i < data.bars.length; i++) {
+                    out += "<tr id='idx_" + i + "'><td>" + data.bars[i].name + "</td><td>" + (data.bars[i].address || '') + "</td><td>" + (data.bars[i].type || '') + "</td><td class='center'>" + (data.bars[i].price || '?') + "</td><td class='center'>" + (data.bars[i].rating || '') + "</td><td>" + (data.bars[i].notes || '') + "</td></tr>";
+                }
+                var container = document.querySelector("table#bars tbody");
+                container.innerHTML = out;
+            }
+        }
+        window.app = app;
+        app.init();
+    })();
+</script>
+</body>
+</html>
