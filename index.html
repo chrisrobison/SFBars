@@ -39,11 +39,46 @@
         /* color:#fff !important; */
 
     }
+    #dialog {
+        display:none;
+        position:absolute;
+        top:10%;
+        left:30%;
+        width:800px;
+        height:600px;
+        border:1em solid #000;
+        box-shadow:.5em .5em .5em #0006;
+        background-color:#fff;
+    }
+    .closeBtn {
+        background-color: #fff;
+        box-shadow: 3px 3px 2px #0006;
+        border-radius: 2em;
+        font-size: 2.5em;
+        width: 1em;
+        height: 1em;
+        display: inline-block;
+        overflow: hidden;
+        position: absolute;
+        color: #000;
+        top: -1em;
+        left: -1em;
+        text-decoration: none;
+        padding: 0px;
+        line-height: 1em;
+        text-align: center;
+    }
+    #types {
+        width:14em;
+        float:left;
+    }
 </style>
 </head>
 
 <body id="home">
     <main>
+        <fieldset id='types'>
+        </fieldset>
         <table id='bars'>
             <thead>
                 <tr>
@@ -59,6 +94,10 @@
             </tbody>
         </table>
     </main>
+    <div id='dialog'>
+        <a href='#' onclick="app.dialog.style.display='none'" class='closeBtn'>ⓧ</a>
+        <iframe id='map' width='800' height='600'></iframe>
+    </div>
 <script>
     (function() {
         const app = {
@@ -77,9 +116,19 @@
                 el.target.className = 'sorted sortOrder' + app.sortOrder;
 
                 if (app.sortOrder) {
-                    app.bars.bars.sort((b, a) => (a[app.sortedBy] >= b[app.sortedBy]) ? 1 : -1);
+                    //app.bars.bars.sort((b, a) => (a[app.sortedBy] >= b[app.sortedBy]) ? 1 : -1);
+                    app.bars.bars.sort(function(b, a) {
+                        if (a[app.sortedBy].match(/^The\s/i)) { a[app.sortedBy] = a[app.sortedBy].replace(/^The\s/i, '') + ", The"; }
+                        if (b[app.sortedBy].match(/^The\s/i)) { b[app.sortedBy] = b[app.sortedBy].replace(/^The\s/i, '') + ", The"; }
+                        return (a[app.sortedBy] >= b[app.sortedBy]) ? 1 : -1}
+                    );
                 } else {
-                    app.bars.bars.sort((a, b) => (a[app.sortedBy] >= b[app.sortedBy]) ? 1 : -1);
+                    //app.bars.bars.sort((a, b) => (a[app.sortedBy] >= b[app.sortedBy]) ? 1 : -1);
+                    app.bars.bars.sort(function(a, b) {
+                        if (a[app.sortedBy].match(/^The\s/i)) { a[app.sortedBy] = a[app.sortedBy].replace(/^The\s/i, '') + ", The"; }
+                        if (b[app.sortedBy].match(/^The\s/i)) { b[app.sortedBy] = b[app.sortedBy].replace(/^The\s/i, '') + ", The"; }
+                        return (a[app.sortedBy] >= b[app.sortedBy]) ? 1 : -1}
+                    );
                 }
                 app.display(app.bars);
                 app.lastSortedBy = who;
@@ -91,7 +140,9 @@
                     console.log(`Sorting by ${e.target.innerText}`);
                     app.sort(e);
                 });
-                
+                app.map = document.querySelector("#map");
+                app.dialog = document.querySelector("#dialog");
+
                 const tbody = document.querySelector("tbody");
                 tbody.addEventListener("click", function(e) {
                     console.log("Clicked on bar");
@@ -107,21 +158,62 @@
                         var idx = e.target.parentNode.id.replace(/[^0-9]*/, '');
                         app.selected = app.bars.bars[idx];
                         console.dir(app.selected);
+                        app.map.src = "https://www.google.com/maps/embed/v1/place?key=AIzaSyAAnPQjGJ_OxHT-45IvHUA6Rxt_4EgDdDA&q=" + encodeURIComponent(app.selected.name+', '+app.selected.address+' San Francisco CA');
+                        app.dialog.style.display = "block";
                     }
+                    
                 });
                 fetch("bars.json")
                     .then(response => response.json()) 
                     .then(data => {
                         console.dir(data);
-                        data.bars.sort((a,b) => (a.name > b.name) ? 1 : -1);
+                        //data.bars.sort((a,b) => (a.name > b.name) ? 1 : -1);
+                        data.bars.sort(function(a, b) {
+                            if (app.sortedBy) {
+                                if (a[app.sortedBy].match(/^The\s/i)) { a[app.sortedBy] = a[app.sortedBy].replace(/^The\s/i, '') + ", The"; }
+                                if (b[app.sortedBy].match(/^The\s/i)) { b[app.sortedBy] = b[app.sortedBy].replace(/^The\s/i, '') + ", The"; }
+                                return (a[app.sortedBy] >= b[app.sortedBy]) ? 1 : -1;
+                            } else {
+                                return(a.name > b.name) ? 1 : -1;
+                            }
+                        }
+                    );
                         app.bars = data;
+                        app.getTypes();
+                        app.showTypes();
                         app.display(app.bars);
+
                     });
+            },
+            showTypes: function() {
+                var out = "";
+                for (var i in app.types) {
+                    out += '<input type="checkbox" id="type_' + i + '" name="type_' + i + '">';
+                    out += '<label for="id_' + i + '">' + i + ' [' + app.types[i] + ']</label><br/>\n';
+                }
+                document.querySelector("#types").innerHTML = out;
+            },
+            getTypes: function() {
+                var types = {}, bar;
+
+                for (var i=0; i < app.bars.bars.length; i++) {
+                    bar = app.bars.bars[i];
+                    if (!types[bar.type]) {
+                        types[bar.type] = 1;
+                    } else {
+                        types[bar.type]++;
+                    }
+                }
+                app.types = types;
             },
             display: function(data) {
                 var out = '';
                 for (var i=0; i < data.bars.length; i++) {
-                    out += "<tr id='idx_" + i + "'><td>" + data.bars[i].name + "</td><td>" + (data.bars[i].address || '') + "</td><td>" + (data.bars[i].type || '') + "</td><td class='center'>" + (data.bars[i].price || '?') + "</td><td class='center'>" + (data.bars[i].rating || '') + "</td><td>" + (data.bars[i].notes || '') + "</td></tr>";
+                    var rating = '0.0';
+                    if (data.bars[i].rating) {
+                        rating = data.bars[i].rating.toString().replace(/(\d)(\d)/, "$1.$2");
+                    }
+                    out += "<tr id='idx_" + i + "'><td>" + data.bars[i].name + "</td><td>" + (data.bars[i].address || '') + "</td><td>" + (data.bars[i].type || '') + "</td><td class='center'>" + (data.bars[i].price || '?') + "</td><td class='center'>" + (rating || '') + "</td><td>" + (data.bars[i].notes || '') + "</td></tr>";
                 }
                 var container = document.querySelector("table#bars tbody");
                 container.innerHTML = out;
