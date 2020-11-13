@@ -181,10 +181,31 @@
                         app.bars = data;
                         app.getTypes();
                         app.showTypes();
+                        app.typesContainer = document.querySelector('fieldset#types');
+                        app.typesContainer.addEventListener('click', function(e) {
+                            const name = e.target.id.match(/type_(.*)/);
+
+                            if (name && name[1]) {
+                                if (e.target.checked) {
+                                    app.query.push(name[1]);
+                                } else {
+                                    let chk = app.query.indexOf(name[1]);
+                                    if (chk) { app.query.splice(chk, 1); }
+                                }
+
+                                console.dir(name);
+                                const filtered = app.bars.bars.filter(function(item) {
+                                    return this.indexOf(item.type) < 0;
+                                }, app.query);
+                                console.dir(filtered);
+                                app.display({"bars":filtered});
+                            }
+                        });
                         app.display(app.bars);
 
                     });
             },
+            query: [],
             showTypes: function() {
                 var out = "";
                 for (var i in app.types) {
