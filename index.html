@@ -3,23 +3,27 @@
 <head>
 	<meta charset="utf-8">
 	<title></title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
     body {
         margin:0;
         padding:0;
         font-size:14px;
-        font-family:'Montserrat', sans-serif;
+        font-family:'Lexend', sans-serif;
     }
     #bars {
-        margin: 1em auto;
+        margin: 0px auto;
+
         border-collapse: collapse;
-        border: 1px solid #bbb;
+        border: 0px solid #bbb;
+		flex: 2 0 auto;
+
     }
     th {
         background-color:#333;
         color:#fff;
         padding:.5em;
+		border:0px;
     }
     td {
         border-left: 1px solid #bbb;
@@ -28,8 +32,12 @@
     .center {
         text-align:center;
     }
+	th .asc {
+		content: "▲";
+	}
     .sortOrder0::before {
         content:"▲";
+		color:#ccc;
     }
     .sortOrder1::before {
         content:"▼";
@@ -39,6 +47,9 @@
         /* color:#fff !important; */
 
     }
+	main {
+		display:flex;	
+	}
     #dialog {
         display:none;
         position:absolute;
@@ -69,9 +80,13 @@
         text-align: center;
     }
     #types {
-        width:14em;
-        float:left;
-    }
+        flex: 1 0 14em;
+    	
+	}
+	.sort {
+		font-size: 8px;
+		display: inline-block;
+	}
 </style>
 </head>
 
@@ -82,7 +97,7 @@
         <table id='bars'>
             <thead>
                 <tr>
-                    <th class='sorted sortOrder0'>Name</th>
+					<th><div class='sort'><span class='asc'>▲</span><br><span class='desc'>▼</span></div> Name</th>
                     <th>Address</th>
                     <th>Type</th>
                     <th>Price</th>
