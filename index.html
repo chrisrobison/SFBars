@@ -1,93 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-	<meta charset="utf-8">
-	<title></title>
+    <meta charset="utf-8">
+    <title></title>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-    body {
-        margin:0;
-        padding:0;
-        font-size:14px;
-        font-family:'Lexend', sans-serif;
-    }
-    #bars {
-        margin: 0px auto;
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-size: 14px;
+            font-family: 'Lexend', sans-serif;
+        }
 
-        border-collapse: collapse;
-        border: 0px solid #bbb;
-		flex: 2 0 auto;
+        #bars {
+            margin: 0px auto;
 
-    }
-    th {
-        background-color:#333;
-        color:#fff;
-        padding:.5em;
-		border:0px;
-    }
-    td {
-        border-left: 1px solid #bbb;
-        padding:.25em;
-    }
-    .center {
-        text-align:center;
-    }
-	th .asc {
-		content: "▲";
-	}
-    .sortOrder0::before {
-        content:"▲";
-		color:#ccc;
-    }
-    .sortOrder1::before {
-        content:"▼";
-    }
-    tr.selected > td {
-        background-color:#99eeffaa;
-        /* color:#fff !important; */
+            border-collapse: collapse;
+            border: 0px solid #bbb;
+            flex: 2 0 auto;
 
-    }
-	main {
-		display:flex;	
-	}
-    #dialog {
-        display:none;
-        position:absolute;
-        top:10%;
-        left:30%;
-        width:800px;
-        height:600px;
-        border:1em solid #000;
-        box-shadow:.5em .5em .5em #0006;
-        background-color:#fff;
-    }
-    .closeBtn {
-        background-color: #fff;
-        box-shadow: 3px 3px 2px #0006;
-        border-radius: 2em;
-        font-size: 2.5em;
-        width: 1em;
-        height: 1em;
-        display: inline-block;
-        overflow: hidden;
-        position: absolute;
-        color: #000;
-        top: -1em;
-        left: -1em;
-        text-decoration: none;
-        padding: 0px;
-        line-height: 1em;
-        text-align: center;
-    }
-    #types {
-        flex: 1 0 14em;
-    	
-	}
-	.sort {
-		font-size: 8px;
-		display: inline-block;
-	}
-</style>
+        }
+
+        th {
+            background-color: #333;
+            color: #fff;
+            padding: .5em;
+            border: 0px;
+        }
+
+        td {
+            border-left: 1px solid #bbb;
+            padding: .25em;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        th .asc {
+            content: "▲";
+        }
+
+        .sortOrder0::before {
+            content: "▲";
+            color: #ccc;
+        }
+
+        .sortOrder1::before {
+            content: "▼";
+        }
+
+        tr.selected>td {
+            background-color: #99eeffaa;
+            /* color:#fff !important; */
+
+        }
+
+        main {
+            display: flex;
+        }
+
+        #dialog {
+            display: none;
+            position: absolute;
+            top: 10%;
+            left: 30%;
+            width: 800px;
+            height: 600px;
+            border: 1em solid #000;
+            box-shadow: .5em .5em .5em #0006;
+            background-color: #fff;
+        }
+
+        .closeBtn {
+            background-color: #fff;
+            box-shadow: 3px 3px 2px #0006;
+            border-radius: 2em;
+            font-size: 2.5em;
+            width: 1em;
+            height: 1em;
+            display: inline-block;
+            overflow: hidden;
+            position: absolute;
+            color: #000;
+            top: -1em;
+            left: -1em;
+            text-decoration: none;
+            padding: 0px;
+            line-height: 1em;
+            text-align: center;
+        }
+
+        #types {
+            flex: 1 0 14em;
+
+        }
+
+        .sort {
+            font-size: 8px;
+            display: inline-block;
+            float: left;
+        }
+
+        tr:nth-child(2n) {
+            background-color: #0001;
+        }
+    </style>
 </head>
 
 <body id="home">
@@ -97,12 +116,24 @@
         <table id='bars'>
             <thead>
                 <tr>
-					<th><div class='sort'><span class='asc'>▲</span><br><span class='desc'>▼</span></div> Name</th>
-                    <th>Address</th>
-                    <th>Type</th>
-                    <th>Price</th>
-                    <th>Rating</th>
-                    <th>Notes</th>
+                    <th>
+                        <div class='sort'><span class='asc'>▲</span><br><span class='desc'>▼</span></div> Name
+                    </th>
+                    <th>
+                        <div class='sort'><span class='asc'>▲</span><br><span class='desc'>▼</span></div> Address
+                    </th>
+                    <th>
+                        <div class='sort'><span class='asc'>▲</span><br><span class='desc'>▼</span></div> Type
+                    </th>
+                    <th>
+                        <div class='sort'><span class='asc'>▲</span><br><span class='desc'>▼</span></div> Price
+                    </th>
+                    <th>
+                        <div class='sort'><span class='asc'>▲</span><br><span class='desc'>▼</span></div> Rating
+                    </th>
+                    <th>
+                        <div class='sort'><span class='asc'>▲</span><br><span class='desc'>▼</span></div> Notes
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -113,151 +144,171 @@
         <a href='#' onclick="app.dialog.style.display='none'" class='closeBtn'>ⓧ</a>
         <iframe id='map' width='800' height='600'></iframe>
     </div>
-<script>
-    (function() {
-        const app = {
-            sortedBy: 'name',
-            sortOrder: 0,
-            lastSortedBy: 'name',
-            sort: function(el) {
-                const who = el.target.innerText.toLowerCase();
-                app.sortedBy = who;
-                
-                if (who === app.lastSortedBy) {
-                    app.sortOrder ^= 1;
-                } else {
-                    app.sortOrder = 0;
-                }
-                el.target.className = 'sorted sortOrder' + app.sortOrder;
+    <script>
+        (function() {
+            const app = {
+                sortedBy: 'name',
+                sortOrder: 0,
+                lastSortedBy: 'name',
+                sort: function(el) {
+                    const who = el.target.innerText.toLowerCase();
+                    app.sortedBy = who;
 
-                if (app.sortOrder) {
-                    //app.bars.bars.sort((b, a) => (a[app.sortedBy] >= b[app.sortedBy]) ? 1 : -1);
-                    app.bars.bars.sort(function(b, a) {
-                        if (a[app.sortedBy].match(/^The\s/i)) { a[app.sortedBy] = a[app.sortedBy].replace(/^The\s/i, '') + ", The"; }
-                        if (b[app.sortedBy].match(/^The\s/i)) { b[app.sortedBy] = b[app.sortedBy].replace(/^The\s/i, '') + ", The"; }
-                        return (a[app.sortedBy] >= b[app.sortedBy]) ? 1 : -1}
-                    );
-                } else {
-                    //app.bars.bars.sort((a, b) => (a[app.sortedBy] >= b[app.sortedBy]) ? 1 : -1);
-                    app.bars.bars.sort(function(a, b) {
-                        if (a[app.sortedBy].match(/^The\s/i)) { a[app.sortedBy] = a[app.sortedBy].replace(/^The\s/i, '') + ", The"; }
-                        if (b[app.sortedBy].match(/^The\s/i)) { b[app.sortedBy] = b[app.sortedBy].replace(/^The\s/i, '') + ", The"; }
-                        return (a[app.sortedBy] >= b[app.sortedBy]) ? 1 : -1}
-                    );
-                }
-                app.display(app.bars);
-                app.lastSortedBy = who;
-            },
-            init: function() {
-                const thead = document.querySelector("thead");
-                thead.addEventListener("click", function(e) {
-                    document.querySelector('.sorted').className = '';
-                    console.log(`Sorting by ${e.target.innerText}`);
-                    app.sort(e);
-                });
-                app.map = document.querySelector("#map");
-                app.dialog = document.querySelector("#dialog");
-
-                const tbody = document.querySelector("tbody");
-                tbody.addEventListener("click", function(e) {
-                    console.log("Clicked on bar");
-                    console.dir(e);
-                    console.log("Clicked on " + e.target.parentNode.id);
-
-                    if (e.target.parentNode && e.target.parentNode.id) {
-                        const sel = document.querySelector('.selected');
-                        if (sel) {
-                            sel.className = '';
-                        }
-                        e.target.parentNode.className = 'selected';
-                        var idx = e.target.parentNode.id.replace(/[^0-9]*/, '');
-                        app.selected = app.bars.bars[idx];
-                        console.dir(app.selected);
-                        app.map.src = "https://www.google.com/maps/embed/v1/place?key=AIzaSyAAnPQjGJ_OxHT-45IvHUA6Rxt_4EgDdDA&q=" + encodeURIComponent(app.selected.name+', '+app.selected.address+' San Francisco CA');
-                        app.dialog.style.display = "block";
+                    if (who === app.lastSortedBy) {
+                        app.sortOrder ^= 1;
+                    } else {
+                        app.sortOrder = 0;
                     }
-                    
-                });
-                fetch("bars.json")
-                    .then(response => response.json()) 
-                    .then(data => {
-                        console.dir(data);
-                        //data.bars.sort((a,b) => (a.name > b.name) ? 1 : -1);
-                        data.bars.sort(function(a, b) {
-                            if (app.sortedBy) {
-                                if (a[app.sortedBy].match(/^The\s/i)) { a[app.sortedBy] = a[app.sortedBy].replace(/^The\s/i, '') + ", The"; }
-                                if (b[app.sortedBy].match(/^The\s/i)) { b[app.sortedBy] = b[app.sortedBy].replace(/^The\s/i, '') + ", The"; }
-                                return (a[app.sortedBy] >= b[app.sortedBy]) ? 1 : -1;
-                            } else {
-                                return(a.name > b.name) ? 1 : -1;
-                            }
-                        }
-                    );
-                        app.bars = data;
-                        app.getTypes();
-                        app.showTypes();
-                        app.typesContainer = document.querySelector('fieldset#types');
-                        app.typesContainer.addEventListener('click', function(e) {
-                            const name = e.target.id.match(/type_(.*)/);
+                    el.target.className = 'sorted sortOrder' + app.sortOrder;
 
-                            if (name && name[1]) {
-                                if (e.target.checked) {
-                                    app.query.push(name[1]);
-                                } else {
-                                    let chk = app.query.indexOf(name[1]);
-                                    if (chk) { app.query.splice(chk, 1); }
-                                }
-
-                                console.dir(name);
-                                const filtered = app.bars.bars.filter(function(item) {
-                                    return this.indexOf(item.type) < 0;
-                                }, app.query);
-                                console.dir(filtered);
-                                app.display({"bars":filtered});
+                    if (app.sortOrder) {
+                        //app.bars.bars.sort((b, a) => (a[app.sortedBy] >= b[app.sortedBy]) ? 1 : -1);
+                        app.bars.bars.sort(function(b, a) {
+                            if (a[app.sortedBy].match(/^The\s/i)) {
+                                a[app.sortedBy] = a[app.sortedBy].replace(/^The\s/i, '') + ", The";
                             }
+                            if (b[app.sortedBy].match(/^The\s/i)) {
+                                b[app.sortedBy] = b[app.sortedBy].replace(/^The\s/i, '') + ", The";
+                            }
+                            return (a[app.sortedBy] >= b[app.sortedBy]) ? 1 : -1
                         });
-                        app.display(app.bars);
+                    } else {
+                        //app.bars.bars.sort((a, b) => (a[app.sortedBy] >= b[app.sortedBy]) ? 1 : -1);
+                        app.bars.bars.sort(function(a, b) {
+                            if (a[app.sortedBy].match(/^The\s/i)) {
+                                a[app.sortedBy] = a[app.sortedBy].replace(/^The\s/i, '') + ", The";
+                            }
+                            if (b[app.sortedBy].match(/^The\s/i)) {
+                                b[app.sortedBy] = b[app.sortedBy].replace(/^The\s/i, '') + ", The";
+                            }
+                            return (a[app.sortedBy] >= b[app.sortedBy]) ? 1 : -1
+                        });
+                    }
+                    app.display(app.bars);
+                    app.lastSortedBy = who;
+                },
+                init: function() {
+                    const thead = document.querySelector("thead");
+                    thead.addEventListener("click", function(e) {
+                        document.querySelector('.sorted').className = '';
+                        console.log(`Sorting by ${e.target.innerText}`);
+                        app.sort(e);
+                    });
+                    app.map = document.querySelector("#map");
+                    app.dialog = document.querySelector("#dialog");
+                    fetch(".mapkey").then(response => response.text()).then(data => {
+                        app.mapkey = data;
+                    });
+                    const tbody = document.querySelector("tbody");
+                    tbody.addEventListener("click", function(e) {
+                        console.log("Clicked on bar");
+                        console.dir(e);
+                        console.log("Clicked on " + e.target.parentNode.id);
+
+                        if (e.target.parentNode && e.target.parentNode.id) {
+                            const sel = document.querySelector('.selected');
+                            if (sel) {
+                                sel.className = '';
+                            }
+                            e.target.parentNode.className = 'selected';
+                            var idx = e.target.parentNode.id.replace(/[^0-9]*/, '');
+                            app.selected = app.bars.bars[idx];
+                            console.dir(app.selected);
+                            const q = encodeURIComponent(app.selected.name + ', ' + app.selected.address + ' San Francisco CA');
+                            app.map.src = `https://www.google.com/maps/embed/v1/place?key=${app.mapkey}&q=${q}`;
+                            app.dialog.style.display = "block";
+                        }
 
                     });
-            },
-            query: [],
-            showTypes: function() {
-                var out = "";
-                for (var i in app.types) {
-                    out += '<input type="checkbox" id="type_' + i + '" name="type_' + i + '">';
-                    out += '<label for="id_' + i + '">' + i + ' [' + app.types[i] + ']</label><br/>\n';
-                }
-                document.querySelector("#types").innerHTML = out;
-            },
-            getTypes: function() {
-                var types = {}, bar;
+                    fetch("bars.json")
+                        .then(response => response.json())
+                        .then(data => {
+                            console.dir(data);
+                            //data.bars.sort((a,b) => (a.name > b.name) ? 1 : -1);
+                            data.bars.sort(function(a, b) {
+                                if (app.sortedBy) {
+                                    if (a[app.sortedBy].match(/^The\s/i)) {
+                                        a[app.sortedBy] = a[app.sortedBy].replace(/^The\s/i, '') + ", The";
+                                    }
+                                    if (b[app.sortedBy].match(/^The\s/i)) {
+                                        b[app.sortedBy] = b[app.sortedBy].replace(/^The\s/i, '') + ", The";
+                                    }
+                                    return (a[app.sortedBy] >= b[app.sortedBy]) ? 1 : -1;
+                                } else {
+                                    return (a.name > b.name) ? 1 : -1;
+                                }
+                            });
+                            app.bars = data;
+                            app.getTypes();
+                            app.showTypes();
+                            app.typesContainer = document.querySelector('fieldset#types');
+                            app.typesContainer.addEventListener('click', function(e) {
+                                const name = e.target.id.match(/type_(.*)/);
 
-                for (var i=0; i < app.bars.bars.length; i++) {
-                    bar = app.bars.bars[i];
-                    if (!types[bar.type]) {
-                        types[bar.type] = 1;
-                    } else {
-                        types[bar.type]++;
+                                if (name && name[1]) {
+                                    if (e.target.checked) {
+                                        app.query.push(name[1]);
+                                    } else {
+                                        let chk = app.query.indexOf(name[1]);
+                                        if (chk) {
+                                            app.query.splice(chk, 1);
+                                        }
+                                    }
+
+                                    console.dir(name);
+                                    const filtered = app.bars.bars.filter(function(item) {
+                                        return this.indexOf(item.type) < 0;
+                                    }, app.query);
+                                    console.dir(filtered);
+                                    app.display({
+                                        "bars": filtered
+                                    });
+                                }
+                            });
+                            app.display(app.bars);
+
+                        });
+                },
+                query: [],
+                showTypes: function() {
+                    var out = "";
+                    for (var i in app.types) {
+                        out += '<input type="checkbox" id="type_' + i + '" name="type_' + i + '">';
+                        out += '<label for="id_' + i + '">' + i + ' [' + app.types[i] + ']</label><br/>\n';
                     }
-                }
-                app.types = types;
-            },
-            display: function(data) {
-                var out = '';
-                for (var i=0; i < data.bars.length; i++) {
-                    var rating = '0.0';
-                    if (data.bars[i].rating) {
-                        rating = data.bars[i].rating.toString().replace(/(\d)(\d)/, "$1.$2");
+                    document.querySelector("#types").innerHTML = out;
+                },
+                getTypes: function() {
+                    var types = {},
+                        bar;
+
+                    for (var i = 0; i < app.bars.bars.length; i++) {
+                        bar = app.bars.bars[i];
+                        if (!types[bar.type]) {
+                            types[bar.type] = 1;
+                        } else {
+                            types[bar.type]++;
+                        }
                     }
-                    out += "<tr id='idx_" + i + "'><td>" + data.bars[i].name + "</td><td>" + (data.bars[i].address || '') + "</td><td>" + (data.bars[i].type || '') + "</td><td class='center'>" + (data.bars[i].price || '?') + "</td><td class='center'>" + (rating || '') + "</td><td>" + (data.bars[i].notes || '') + "</td></tr>";
+                    app.types = types;
+                },
+                display: function(data) {
+                    var out = '';
+                    for (var i = 0; i < data.bars.length; i++) {
+                        var rating = '0.0';
+                        if (data.bars[i].rating) {
+                            rating = data.bars[i].rating.toString().replace(/(\d)(\d)/, "$1.$2");
+                        }
+                        out += "<tr id='idx_" + i + "'><td>" + data.bars[i].name + "</td><td>" + (data.bars[i].address || '') + "</td><td>" + (data.bars[i].type || '') + "</td><td class='center'>" + (data.bars[i].price || '?') + "</td><td class='center'>" + (rating || '') + "</td><td>" + (data.bars[i].notes || '') + "</td></tr>";
+                    }
+                    var container = document.querySelector("table#bars tbody");
+                    container.innerHTML = out;
                 }
-                var container = document.querySelector("table#bars tbody");
-                container.innerHTML = out;
             }
-        }
-        window.app = app;
-        app.init();
-    })();
-</script>
+            window.app = app;
+            app.init();
+        })();
+    </script>
 </body>
+
 </html>
